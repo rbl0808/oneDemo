@@ -80,9 +80,9 @@ public class PdfUtil {
 
     /**
      * @param excelPath 需要被转换的excel全路径带文件名
-     * @param pdfPath 转换之后pdf的全路径带文件名
+     * @param wordPath 转换之后word的全路径带文件名
      */
-    public static void excel2word(String excelPath, String pdfPath) {
+    public static void excel2word(String excelPath, String wordPath) {
         // 验证License 若不验证则转化出的pdf文档会有水印产生
 //        if (!getLicense()) {
 //            return;
@@ -91,7 +91,7 @@ public class PdfUtil {
             long old = System.currentTimeMillis();
             // 原始excel路径
             Workbook wb = new Workbook(excelPath);
-            FileOutputStream fileOS = new FileOutputStream(new File(pdfPath));
+            FileOutputStream fileOS = new FileOutputStream(new File(wordPath));
             wb.save(fileOS, com.aspose.cells.SaveFormat.DOCX);
             fileOS.close();
             long now = System.currentTimeMillis();
