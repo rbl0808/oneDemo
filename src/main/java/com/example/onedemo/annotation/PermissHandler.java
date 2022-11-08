@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Date 2022/10/17 16:54
  */
 @Component
-
 public class PermissHandler implements HandlerInterceptor {
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (handler instanceof HandlerMethod) {

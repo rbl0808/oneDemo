@@ -11,7 +11,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 		DataSourceAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class,
 		HibernateJpaAutoConfiguration.class})
-//@EnableAspectJAutoProxy(proxyTargetClass = true,exposeProxy = true)
 public class OneDemoApplication {
 
 	public static void main(String[] args) {

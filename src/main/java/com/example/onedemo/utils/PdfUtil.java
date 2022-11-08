@@ -1,6 +1,7 @@
 package com.example.onedemo.utils;
 
 
+import com.aspose.cells.SaveFormat;
 import com.aspose.cells.Workbook;
 import com.aspose.words.Document;
 import com.aspose.words.License;
@@ -44,7 +45,7 @@ public class PdfUtil {
             //Address是将要被转化的word文档
             Document doc = new Document(wordPath);
             //全面支持DOC, DOCX, OOXML, RTF HTML, OpenDocument, PDF, EPUB, XPS, SWF 相互转换
-            doc.save(os, com.aspose.words.SaveFormat.PDF);
+            doc.save(os, SaveFormat.PDF);
             long now = System.currentTimeMillis();
             os.close();
             //转化用时
@@ -68,7 +69,7 @@ public class PdfUtil {
             // 原始excel路径
             Workbook wb = new Workbook(excelPath);
             FileOutputStream fileOS = new FileOutputStream(new File(pdfPath));
-            wb.save(fileOS, com.aspose.cells.SaveFormat.PDF);
+            wb.save(fileOS, SaveFormat.PDF);
             fileOS.close();
             long now = System.currentTimeMillis();
             //转化用时
@@ -92,7 +93,7 @@ public class PdfUtil {
             // 原始excel路径
             Workbook wb = new Workbook(excelPath);
             FileOutputStream fileOS = new FileOutputStream(new File(wordPath));
-            wb.save(fileOS, com.aspose.cells.SaveFormat.DOCX);
+            wb.save(fileOS, SaveFormat.DOCX);
             fileOS.close();
             long now = System.currentTimeMillis();
             //转化用时
