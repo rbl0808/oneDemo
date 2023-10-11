@@ -4,9 +4,18 @@ package com.example.onedemo.utils;
  * @author zxd
  * @Date 2022/10/10 09:23
  */
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DateUtil {
 //    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmmss");
@@ -121,6 +130,91 @@ public class DateUtil {
      */
     public static String getCurrentDateTimeStr(String pattern) {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(pattern));
+    }
+
+    /**
+     * 获取时间段内日期
+     * @param startTime
+     * @param endTime
+     * @param type  1.日 2.周 3.月 4.半年 5.年
+     * @return
+     */
+    public static List<String> getAllDay(String startTime, String endTime, String type){
+        List<String> res =new ArrayList<>();
+        if(StringUtils.isBlank(startTime) || StringUtils.isBlank(endTime) || StringUtils.isBlank(type)){
+            return res;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        Calendar startDate = Calendar.getInstance();
+        Calendar endDate = Calendar.getInstance();
+        try {
+            startDate.setTime(dateFormat.parse(startTime));
+            endDate.setTime(dateFormat.parse(endTime));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Calendar> allDates = new ArrayList<>();
+        List<Calendar> allWeeks = new ArrayList<>();
+        List<Calendar> allMonths = new ArrayList<>();
+
+        Calendar currentDate = (Calendar) startDate.clone();
+
+        while (!currentDate.after(endDate)) {
+            allDates.add((Calendar) currentDate.clone());
+
+            if (currentDate.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+                allWeeks.add((Calendar) currentDate.clone());
+            }
+
+            if (currentDate.get(Calendar.DAY_OF_MONTH) == 1) {
+                allMonths.add((Calendar) currentDate.clone());
+            }
+
+            currentDate.add(Calendar.DATE, 1);
+        }
+
+        if(StringUtils.equals(type,"1")){
+            res.addAll(allDates.stream().map(date -> dateFormat.format(date.getTime())).collect(Collectors.toList()));
+        }else if(StringUtils.equals(type,"2")){
+            res.addAll(allWeeks.stream().map(date -> dateFormat.format(date.getTime())).collect(Collectors.toList()));
+        }else if(StringUtils.equals(type,"3")){
+            res.addAll(allMonths.stream().map(date -> dateFormat.format(date.getTime())).collect(Collectors.toList()));
+        }
+        return res;
+    }
+
+    /**
+     * 获取日期在第几周
+     * @param time yyyyMMdd格式
+     * @return
+     */
+    public static String getWeek(String time){
+        if(StringUtils.isBlank(time)){
+            return "";
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date;
+        String week = "";
+        try {
+            date = dateFormat.parse(time);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            // 获取日期是今年的第几周
+            int weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+
+            // 获取日期是第几个月（注意，月份从0开始，所以需要加1）
+            int month = calendar.get(Calendar.MONTH) + 1;
+
+            week = weekOfYear + "";
+        } catch (ParseException e) {
+            System.out.println("Invalid date format");
+        }
+        return week;
     }
 }
 
